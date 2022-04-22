@@ -43,11 +43,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 require("./config/passport-config")(passport);
 
-const registerRoute = require('./routes/register')                  //Register route
-app.use(registerRoute)
+// const registerRoute = require('./routes/register')                  //Register route
+// app.use(registerRoute)
 
-const loginRoute = require('./routes/login')                        //Login route
-app.use(loginRoute)
+// const loginRoute = require('./routes/login')                        //Login route
+// app.use(loginRoute)
 
 const PORT = process.env.PORT || 8000;
 
