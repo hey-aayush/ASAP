@@ -1,9 +1,11 @@
 require('dotenv').config();
 
 const express = require('express');
+
 const app = express();
 
-const mongoose = require("mongoose"); // mongo DB used to save users's account info
+require('./config/dbConnection');
+
 const cors = require("cors");
 const passport = require("passport"); // passport-local used for user authentication
 const passportLocal = require("passport-local").Strategy;
@@ -11,15 +13,6 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const flash = require("express-flash");
-
-
-const dbURI = "mongodb://localhost/billify-database"
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(result => {
-        console.log("Mongoose Is Connected");
-    })
-    .catch(err => console.log(err));
-
 
 app.use(flash());
 app.use(bodyParser.json());
