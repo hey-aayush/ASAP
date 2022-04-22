@@ -1,0 +1,10 @@
+/billify-client/node_modules
+/billify-server/node_modules
+/billify-client/.env
+/billify-server/.env
+/billify-client/package-lock.json
+/billify-server/package-lock.json
+package-lock.json
+package.json
+node_modules/
+/package-lock.json
