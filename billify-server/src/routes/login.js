@@ -20,7 +20,12 @@ router.post("/login/shopkeeper",  (req, res, next) => { // req is request, res i
 				const shopkeeper = await Shopkeeper.findOne({
 					email: req.user.email
 				})
-          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: shopkeeper };
+				let user = { ...shopkeeper }
+				if(user.password) {
+					delete user.password;
+				}
+				user = JSON.stringify(user);
+          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: user };
           		///// redir is the redirect information passed to front end react app.
           		return res.json(redir);
         	});
@@ -41,7 +46,12 @@ router.post("/login/customer",  (req, res, next) => { // req is request, res is 
 				const customer = await Customer.findOne({
 					email: req.user.email
 				})
-          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: customer };
+				let user = { ...customer }
+				if(user.password) {
+					delete user.password;
+				}
+				user = JSON.stringify(user);
+          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: user };
           		///// redir is the redirect information passed to front end react app.
           		return res.json(redir);
         	});
@@ -60,6 +70,9 @@ router.get('/login', async (req, res) => {
 			curUser = await Shopkeeper.findOne({
 				email: req.user.email
 			})
+		}
+		if(curUser.password) {
+			delete curUser.password
 		}
         var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: curUser};
         return res.json(redir);

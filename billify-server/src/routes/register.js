@@ -5,6 +5,7 @@ const Customer = require('../models/Customer')
 const flash = require('express-flash')
 const mongoose = require('mongoose')
 const User = require('../models/User')
+const { json } = require('express')
 
 router.use(flash())
 
@@ -19,11 +20,11 @@ router.post("/register/shopkeeper",  (req, res) => {
     	}
       	if (!doc) {
         	////username and password is required during creation of an account
-        	if(req.body.email.length==0){
+        	if(req.body.email?.length==0){
           		var redir = {  redirect: "/register/shopkeeper", message:"Email cannot be empty"};
           		return res.json(redir);
         	}
-        	if(req.body.password.length==0) {
+        	if(req.body.password?.length==0) {
           		var redir = {  redirect: "/register/shopkeeper", message:"Password cannot be empty"};
           		return res.json(redir);  
         	}
@@ -47,7 +48,12 @@ router.post("/register/shopkeeper",  (req, res) => {
                 userTypeId: newShopkeeper._id
             })
             await newUser.save();
-        	var redir = { redirect: "/login/shopkeeper", message:"Shopkeeper Created", user: newShopkeeper};
+			let user = { ...newUser }
+			if(user.password) {
+				delete user.password;
+			}
+			user = JSON.stringify(user);
+        	var redir = { redirect: "/login/shopkeeper", message:"Shopkeeper Created", user: user};
         	return res.json(redir);
     	}
     });
@@ -100,7 +106,12 @@ router.post("/register/customer",  (req, res) => {
 				userTypeId: newCustomer._id
 			})
 			await newUser.save();
-        	var redir = { redirect: "/login/customer", message:"Customer Created", user: newCustomer};
+			let user = { ...newUser }
+			if(user.password) {
+				delete user.password;
+			}
+			user = JSON.stringify(user);
+        	var redir = { redirect: "/login/customer", message:"Customer Created", user: user};
         	return res.json(redir);
     	}
     });

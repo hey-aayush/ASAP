@@ -1,8 +1,14 @@
 import React from 'react'
+import { EditableTableForm } from "./EditableTableForm"
 
 const BillPage = () => {
   return (
-    <div>BillPage</div>
+    <div>
+      <div>BillPage</div>
+      <div>
+            <EditableTableForm />
+      </div>
+    </div>
   )
 }
 
