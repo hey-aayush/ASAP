@@ -33,9 +33,12 @@ router.get('/billing/topcustomers', IsAuthenticated, async(req, res) =>{
     
         bills = sortByFrequency(bills);
 
-        res.send(bills);
+        res.json({
+            status: true,
+            bills
+        });
     }catch(e) {
-        res.status(400).send(e);
+        handleError(e, res);
     }
 })
 
