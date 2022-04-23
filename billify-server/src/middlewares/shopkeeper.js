@@ -1,4 +1,3 @@
-const Product = require('../models/Product');
 const ShopKeeper = require('../models/Shopkeeper');
 const Customer = require('../models/Customer');
 const { handleError, ClientError } = require('../utils/errorHandler');

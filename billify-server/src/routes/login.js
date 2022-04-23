@@ -3,6 +3,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const Customer = require('../models/Customer')
 const Shopkeeper = require('../models/Shopkeeper')
+const { IsAuthenticated } = require('../middlewares/auth')
 
 router.use(flash())
 
@@ -69,7 +70,7 @@ router.get('/login', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', IsAuthenticated, (req, res) => {
 	req.logOut() ;   // logOut function by Passport
 	req.session.destroy();
 	return res.status(200).json({message: 'LOGOUT_SUCCESS'});
