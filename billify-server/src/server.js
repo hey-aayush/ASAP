@@ -33,6 +33,11 @@ app.use(
       	secret: "secretcode",
       	resave: true,
       	saveUninitialized: true,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24,
+            /* Set to false, to allow cookies from http */
+            secure: false,
+        }
     })
 );
 
@@ -48,6 +53,9 @@ app.use(registerRoute)
 
 const loginRoute = require('./routes/login')                        //Login route
 app.use(loginRoute)
+
+const productRouter = require('./routes/productRouter');
+app.use('/product', productRouter);
 
 const PORT = process.env.PORT || 8000;
 
