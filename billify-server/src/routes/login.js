@@ -27,21 +27,6 @@ router.post("/login/shopkeeper",  (req, res, next) => { // req is request, res i
     })(req, res, next);
 });
 
-router.get('/login/shopkeeper', async (req, res) => {
-    if (req.isAuthenticated()) {
-		const shopkeeper = await Shopkeeper.findOne({
-			email: req.user.email
-		})
-		// console.log("login user", user)
-        var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: shopkeeper};
-        return res.json(redir);
-    }
-    else{
-      	var redir = { redirect: "/login/shopkeeper", message:'Enter your credentials to Log In' };
-        return res.json(redir);
-    }
-});
-
 router.post("/login/customer",  (req, res, next) => { // req is request, res is response
     passport.authenticate("local", (err, user, info) => {
       	if (err) throw err;  
@@ -63,13 +48,19 @@ router.post("/login/customer",  (req, res, next) => { // req is request, res is 
     })(req, res, next);
 });
 
-router.get('/login/customer', async (req, res) => {
+router.get('/login', async (req, res) => {
     if (req.isAuthenticated()) {
-		const customer = await Customer.findOne({
+		// console.log("login user", user)
+		let curUser = await Customer.findOne({
 			email: req.user.email
 		})
-		// console.log("login user", user)
-        var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: customer};
+		console.log(curUser);
+		if(!curUser) {
+			curUser = await Shopkeeper.findOne({
+				email: req.user.email
+			})
+		}
+        var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: curUser};
         return res.json(redir);
     }
     else{
