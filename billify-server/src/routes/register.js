@@ -20,11 +20,11 @@ router.post("/register/shopkeeper",  (req, res) => {
     	}
       	if (!doc) {
         	////username and password is required during creation of an account
-        	if(req.body.email?.length==0){
+        	if(req.body.email && req.body.email.length==0){
           		var redir = {  redirect: "/register/shopkeeper", message:"Email cannot be empty"};
           		return res.json(redir);
         	}
-        	if(req.body.password?.length==0) {
+        	if(req.body.password && req.body.password.length==0) {
           		var redir = {  redirect: "/register/shopkeeper", message:"Password cannot be empty"};
           		return res.json(redir);  
         	}
