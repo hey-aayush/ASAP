@@ -36,6 +36,9 @@ const customerSchema = mongoose.Schema({
     },
     bills: [{
         type: mongoose.Schema.Types.ObjectId,
+    }],
+    notifications: [{
+        type: mongoose.Schema.Types.ObjectId
     }]
 })
 

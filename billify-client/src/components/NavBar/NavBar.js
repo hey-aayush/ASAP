@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { SidebarData_logged_in, SidebarData_logged_out } from './SidebarData';
 import './NavBar.css';
 import { IconContext } from 'react-icons';
