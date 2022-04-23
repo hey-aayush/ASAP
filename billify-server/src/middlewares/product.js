@@ -18,7 +18,8 @@ module.exports.CreateProduct = async (req, res) => {
         if(product){
             return res.json({
                 status: true,
-                message: 'Product created'
+                message: 'Product created', 
+                product
             });
         }
 
@@ -64,6 +65,83 @@ module.exports.AddProduct = async (req, res) => {
         });
     }
     catch(e){
+        handleError(e, res);
+    }
+}
+
+module.exports.EditProduct = async (req, res) => {
+    try{
+        const {productId, updates} = req.body;
+
+        if(!productId || !updates){
+            throw new ClientError('Missing fields');
+        }
+
+        const product = await Product.findById(productId);
+
+        for (const [key, value] of Object.entries(updates)){
+            product[key] = value;
+        }
+
+        await product.save();
+
+        return res.json({
+            status: true, 
+            message: 'Product updated',
+            product
+        });
+    } catch(e){
+        return handleError(e, res);
+    }
+}
+
+module.exports.GetProducts = async (req, res) => {
+    try{
+        const user = req.user;
+        const shopkeeper = await ShopKeeper.findById(user.userTypeId);
+        if(!shopkeeper){
+            throw new ClientError('No shopkeeper available');
+        }
+
+        const products = await Store.find({
+            storeId : shopkeeper.storeId
+        });
+
+        return res.json({
+            status: true,
+            products
+        });
+    } 
+    catch (e){
+        handleError(e, res);
+    }
+}
+
+module.exports.GetProduct = async (req, res) => {
+    try{
+        const user = req.user;
+        const { id } = req.query;
+
+        const shopkeeper = await ShopKeeper.findById(user.userTypeId);
+        if(!shopkeeper){
+            throw new ClientError('No shopkeeper available');
+        }
+
+        const product = await Store.find({
+            storeId: shopkeeper.storeId,
+            produtId: id
+        });
+
+        if(!product){
+            throw new ClientError('Product unavailable');
+        }
+
+        return res.json({
+            status: true,
+            product
+        });
+    } 
+    catch (e){
         handleError(e, res);
     }
 }
