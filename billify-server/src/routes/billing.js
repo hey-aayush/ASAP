@@ -6,6 +6,8 @@ const {IsAuthenticated} = require('../middlewares/auth');
 const Shopkeeper = require('../models/Shopkeeper');
 const Customer = require('../models/Customer')
 const Notification = require('../models/Notification')
+const Store = require('../models/Store');
+const {handleError, ClientError} = require('../utils/errorHandler');
 
 // for shopkeepers to get top customers between two intervals
 
@@ -146,11 +148,49 @@ router.get('/billing/products', IsAuthenticated, async(req, res) =>{
     }
 })
 
+const isSufficientProductsAvailable = async (storeId, items) => {
+    for(let i = 0; i < items.length; i++){
+        const product = await Store.findOne({
+            storeId, 
+            productId : items.productId
+        });
+
+        if(!product){
+            return false;
+        }
+
+        if(product.quantity < items.quantity){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+const performPurchase = async (storeId, items) => {
+    for(let i = 0; i < items.length; i++){
+        const product = await Store.findOne({
+            storeId, 
+            productId : items.productId
+        });
+
+        product.quantity -= items.quantity;
+        await product.save();
+    }
+}
+
 router.post('/billing/generatebill',IsAuthenticated,  async (req, res) => {
     const body = req.body;
     const {items, shopId, customerId, amount} = body;
     
     try{
+        const isPurchasePossible = await isSufficientProductsAvailable(shopId, items);
+        if(!isPurchasePossible){
+            throw new ClientError('Purchase not possible due to unavailability of items');
+        }
+
+        await performPurchase(shopId, items);
+
         const bill = new Bill({
             items,
             shopId,

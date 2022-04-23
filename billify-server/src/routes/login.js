@@ -3,6 +3,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const Customer = require('../models/Customer')
 const Shopkeeper = require('../models/Shopkeeper')
+const { IsAuthenticated } = require('../middlewares/auth')
 
 router.use(flash())
 
@@ -19,27 +20,17 @@ router.post("/login/shopkeeper",  (req, res, next) => { // req is request, res i
 				const shopkeeper = await Shopkeeper.findOne({
 					email: req.user.email
 				})
-          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: shopkeeper };
+				let user = { ...shopkeeper }
+				if(user.password) {
+					delete user.password;
+				}
+				user = JSON.stringify(user);
+          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: user };
           		///// redir is the redirect information passed to front end react app.
           		return res.json(redir);
         	});
       	}
     })(req, res, next);
-});
-
-router.get('/login/shopkeeper', async (req, res) => {
-    if (req.isAuthenticated()) {
-		const shopkeeper = await Shopkeeper.findOne({
-			email: req.user.email
-		})
-		// console.log("login user", user)
-        var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: shopkeeper};
-        return res.json(redir);
-    }
-    else{
-      	var redir = { redirect: "/login/shopkeeper", message:'Enter your credentials to Log In' };
-        return res.json(redir);
-    }
 });
 
 router.post("/login/customer",  (req, res, next) => { // req is request, res is response
@@ -55,7 +46,12 @@ router.post("/login/customer",  (req, res, next) => { // req is request, res is 
 				const customer = await Customer.findOne({
 					email: req.user.email
 				})
-          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: customer };
+				let user = { ...customer }
+				if(user.password) {
+					delete user.password;
+				}
+				user = JSON.stringify(user);
+          		var redir = { redirect: "/" , message:"Login Successfully" , email:req.user.email , user: user };
           		///// redir is the redirect information passed to front end react app.
           		return res.json(redir);
         	});
@@ -63,13 +59,22 @@ router.post("/login/customer",  (req, res, next) => { // req is request, res is 
     })(req, res, next);
 });
 
-router.get('/login/customer', async (req, res) => {
+router.get('/login', async (req, res) => {
     if (req.isAuthenticated()) {
-		const customer = await Customer.findOne({
+		// console.log("login user", user)
+		let curUser = await Customer.findOne({
 			email: req.user.email
 		})
-		// console.log("login user", user)
-        var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: customer};
+		console.log(curUser);
+		if(!curUser) {
+			curUser = await Shopkeeper.findOne({
+				email: req.user.email
+			})
+		}
+		if(curUser.password) {
+			delete curUser.password
+		}
+        var redir = { redirect: "/" , message:'Already Logged In', email:req.user.email , user: curUser};
         return res.json(redir);
     }
     else{
@@ -78,7 +83,7 @@ router.get('/login/customer', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', IsAuthenticated, (req, res) => {
 	req.logOut() ;   // logOut function by Passport
 	req.session.destroy();
 	return res.status(200).json({message: 'LOGOUT_SUCCESS'});
