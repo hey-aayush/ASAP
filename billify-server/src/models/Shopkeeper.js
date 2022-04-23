@@ -6,7 +6,7 @@ const shopSchema = mongoose.Schema({
         trim: true,
         required: true,
     }, 
-    shopkeepername: {
+    shopkeeperName: {
         type: String,
         trim: true,
         required: true,
