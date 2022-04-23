@@ -94,3 +94,54 @@ module.exports.EditProduct = async (req, res) => {
         return handleError(e, res);
     }
 }
+
+module.exports.GetProducts = async (req, res) => {
+    try{
+        const user = req.user;
+        const shopkeeper = await ShopKeeper.findById(user.userTypeId);
+        if(!shopkeeper){
+            throw new ClientError('No shopkeeper available');
+        }
+
+        const products = await Store.find({
+            storeId : shopkeeper.storeId
+        });
+
+        return res.json({
+            status: true,
+            products
+        });
+    } 
+    catch (e){
+        handleError(e, res);
+    }
+}
+
+module.exports.GetProduct = async (req, res) => {
+    try{
+        const user = req.user;
+        const { id } = req.query;
+
+        const shopkeeper = await ShopKeeper.findById(user.userTypeId);
+        if(!shopkeeper){
+            throw new ClientError('No shopkeeper available');
+        }
+
+        const product = await Store.find({
+            storeId: shopkeeper.storeId,
+            produtId: id
+        });
+
+        if(!product){
+            throw new ClientError('Product unavailable');
+        }
+
+        return res.json({
+            status: true,
+            product
+        });
+    } 
+    catch (e){
+        handleError(e, res);
+    }
+}
