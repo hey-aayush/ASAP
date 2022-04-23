@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import {Form,Input, Button,Card,Switch} from 'antd';
 import shopkeeperIcon from '../../assets/shopkeeper.png'
-
+import axios from 'axios';
 const formItemLayout = {
   labelCol: {
     xs: {
@@ -36,11 +36,45 @@ const tailFormItemLayout = {
 function SignUpCard() {
   
   const [signing,setSigning]=useState(false);
+  const [isShopkeeper,setShopkeeper]=useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
     console.log("Success : ",values)
     setSigning(true);
+
+    var signInRoute=process.env.REACT_APP_BACKEND;
+    var userRequest;
+    if(isShopkeeper){
+      signInRoute = signInRoute + '/register/shopkeeper';
+      userRequest={
+        email: values.email, 
+        password: values.password,
+        name:(values.firstname+' '+values.lastname),
+        shopName:values.shopName
+      };
+    }else{
+      signInRoute = signInRoute + '/register/customer';
+      userRequest={
+        email: values.email, 
+        password: values.password,
+        name:(values.firstname+' '+values.lastname),
+      };
+    }
+
+    console.log(userRequest);
+    axios.post(signInRoute,userRequest, {withCredentials: true}).then(res => {
+        console.log(res);
+        if(res['data']){
+            window.location.reload(false);
+        }
+    }).catch(error => {
+        console.log(error);
+    })
+  }
+
+  const handleShopChange=()=>{
+    setShopkeeper(!isShopkeeper);
   }
   return (
     <div>
@@ -149,20 +183,7 @@ function SignUpCard() {
         <Input.Password style={{margin:0}}/>
       </Form.Item>
 
-      <Form.Item
-        name="address"
-        label="Address"
-        rules={[
-          {
-            required: true,
-            message: 'Please enter address of your shop!',
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
+      
       <Form.Item
         name="isShopkeeper"
         label="Are you Shopkeeper ?"
@@ -173,8 +194,16 @@ function SignUpCard() {
         ]}
         valuePropName='checked'
         >
-        <Switch checkedChildren="Yes" unCheckedChildren="No" defaultChecked />
+        <Switch checkedChildren="Yes" unCheckedChildren="No" onChange={handleShopChange}/>
       </Form.Item>
+      {(isShopkeeper)?(
+        <Form.Item
+          name="shopName"
+          label="Shop Name"
+        >
+          <Input />
+        </Form.Item>
+      ):(<></>)}
 
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit" loading={signing}>
