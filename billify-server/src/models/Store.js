@@ -2,13 +2,11 @@ const mongoose = require('mongoose');
 
 const storeSchema = mongoose.Schema({
     storeId: {
-        type: String,
-        trim: true,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
     }, 
     productId: {
-        type: String,
-        trim: true,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
     }, 
     quantity: {

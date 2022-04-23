@@ -1,19 +1,18 @@
 const mongoose = require('mongoose');
 
-const shopSchema = mongoose.Schema({
+const shopkeeperSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true,
         required: true,
     }, 
-    shopkeeperName: {
+    shopName: {
         type: String,
         trim: true,
         required: true,
     }, 
-    storeid: {
-        type: String,
-        trim: true,
+    storeId: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
     }, 
     email: {
@@ -25,9 +24,19 @@ const shopSchema = mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-    }
+    }, 
+    bills: [
+        {
+            type: mongoose.Schema.Types.ObjectId
+        }
+    ],
+    customerIdList: [
+        {
+            type: mongoose.Schema.Types.ObjectId
+        }
+    ]
 });
 
-const Shop = mongoose.model('Shop', shopSchema);
+const Shopkeeper = mongoose.model('Shopkeeper', shopkeeperSchema);
 
-module.exports = Shop;
+module.exports = Shopkeeper;
