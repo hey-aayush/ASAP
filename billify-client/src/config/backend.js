@@ -1,1 +1,1 @@
-module.exports.API = 'http://localhost:8000/';
+module.exports.API = 'http://localhost:8000';
