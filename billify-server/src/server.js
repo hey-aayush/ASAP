@@ -54,6 +54,9 @@ app.use(registerRoute)
 const loginRoute = require('./routes/login')                        //Login route
 app.use(loginRoute)
 
+const getCustomerRoute = require('./routes/getCustomerRouter');
+app.use('/shopkeeper', getCustomerRoute);
+
 const productRouter = require('./routes/productRouter');
 app.use('/product', productRouter);
 
