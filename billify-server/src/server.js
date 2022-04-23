@@ -49,6 +49,9 @@ require("./config/passport-config")(passport);
 // const loginRoute = require('./routes/login')                        //Login route
 // app.use(loginRoute)
 
+const productRouter = require('./routes/productRouter');
+app.use('/product', productRouter);
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
