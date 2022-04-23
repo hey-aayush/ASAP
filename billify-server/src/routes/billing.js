@@ -1,14 +1,19 @@
 const express = require('express')
-const router = new express.Router()
+const router = express.Router()
 const Bill = require('../models/Bill');
 const Product = require('../models/Product')
-
+const {IsAuthenticated} = require('../middlewares/auth');
+const Shopkeeper = require('../models/Shopkeeper');
+const Customer = require('../models/Customer')
 
 // for shopkeepers to get top customers between two intervals
 
-router.get('/billing/topcustomers', async(req, res) =>{
-    const body = req.body;
-    const {shopId, startDate, endDate} = body;
+router.get('/billing/topcustomers', IsAuthenticated, async(req, res) =>{
+    
+    const user = req.user;
+    const shopkeeper = await Shopkeeper.findById(user.userTypeId);
+    const shopId = shopkeeper.storeId;
+    const {startDate, endDate} = req.query
 
 
     try{
@@ -48,13 +53,14 @@ function sortByFrequency(array) {
 
 // for customers to get bills between two dates and with filter
 
-router.get('/billing/products', async(req, res) =>{
-    const body = req.body;
-    const {customerId, startDate, endDate, tag} = body;
+router.get('/billing/products', IsAuthenticated, async(req, res) =>{
+    const {startDate, endDate, tag} = req.query;
+
+    const user = req.user;
+    const customer = await Customer.findById(user.userTypeId);
+    const customerId = customer._id;
 
     try{
-
-        
         const bills = await Bill.find({
             createdAt: {
                 $gte: startDate, 
@@ -89,3 +95,25 @@ router.get('/billing/products', async(req, res) =>{
         res.status(400).send(e);
     }
 })
+
+router.post('/billing/generatebill',IsAuthenticated,  async (req, res) => {
+    const body = req.body;
+    const {items, shopId, customerId, amount} = body;
+    console.log('running');
+    try{
+        const bill = new Bill({
+            items,
+            shopId,
+            customerId,
+            amount
+        })
+        console.log('runningi2')
+        await bill.save();
+
+        res.status(201).send(bill);
+    }catch(e){
+        res.status(400).send(e);
+    }
+})
+
+module.exports = router
