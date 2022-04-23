@@ -60,6 +60,9 @@ app.use('/shopkeeper', getCustomerRoute);
 const productRouter = require('./routes/productRouter');
 app.use('/product', productRouter);
 
+const billingRouter = require('./routes/billing');
+app.use(billingRouter);
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {

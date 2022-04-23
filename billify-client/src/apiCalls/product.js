@@ -68,3 +68,20 @@ module.exports.getProduct = async (id) => {
 
     return res.json();
 }
+
+module.exports.buy = async (items) => {
+    // items = [{productId, quantity}]
+    
+    const res = await fetch(`${API}/product/buy`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            items
+        })
+    });
+
+    return res.json();
+}
