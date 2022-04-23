@@ -4,7 +4,7 @@ import millify from 'millify';
 
 function RevenueCard() {
   return (
-    <Card style={{width:'fit-content',margin:'.5rem auto'}}
+    <Card style={{width:'fit-content',margin:'.5rem auto',textAlign:'center'}}
       title={'Sale Summary'}
       hoverable>
         <Row>

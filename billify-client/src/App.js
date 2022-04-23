@@ -2,7 +2,7 @@ import './App.css';
 import React,{useState,useEffect} from 'react'
 import NavBar from './components/NavBar/NavBar';
 import { BrowserRouter as Router,Routes,Route,Navigate } from 'react-router-dom';
-import HomePage from './components/Pages/HomePage';
+import HomePage from './components/HomePage/HomePage';
 import ProductPage from './components/ProductPages/ProductPage';
 import CustomerPage from './components/CustomerPage/CustomerPage';
 import AuthPage from './components/AuthPage/AuthPage';

@@ -1,13 +1,20 @@
+import { Row,Col } from 'antd'
 import React from 'react'
-import AddProductCard from '../BillPage/AddProductCard'
-import CustomerCard from './CustomerCard'
+import ConsumerItem from '../CustomerPage/ConsumerItem'
+import BillCard from './BillCard'
+import Invoice from './Invoice'
 
 function BillingPage() {
   return (
     <div>
-        BillingPage
-        <CustomerCard/>
-        <AddProductCard/>
+        <Row>
+            <Col lg={16} md={24}>
+                <BillCard/>
+            </Col>
+            <Col lg={8} md={24}>
+                <Invoice/>
+            </Col>
+        </Row>
     </div>
   )
 }
