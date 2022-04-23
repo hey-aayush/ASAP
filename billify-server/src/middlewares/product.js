@@ -107,9 +107,18 @@ module.exports.GetProducts = async (req, res) => {
             storeId : shopkeeper.storeId
         });
 
+        const productsObj = [];
+        for(let i = 0; i < products.length; i++){
+            const currentProduct = await Product.findById(products[i].productId);
+            productsObj.push({
+                product: currentProduct, 
+                quantity: products[i].quantity
+            });
+        }
+
         return res.json({
             status: true,
-            products
+            products : productsObj
         });
     } 
     catch (e){

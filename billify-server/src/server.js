@@ -63,6 +63,9 @@ app.use('/product', productRouter);
 const billingRouter = require('./routes/billing');
 app.use(billingRouter);
 
+const dashboardRouter = require('./routes/dashboard');
+app.use(dashboardRouter);
+
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
