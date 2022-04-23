@@ -1,29 +1,28 @@
 import { Form, Input, Button, Checkbox,Card,Switch } from 'antd';
 import axios from 'axios';
+import React,{useState} from 'react'
 
-const LoginCard = ({imgIcon,title}) => {
+const LoginCard = ({imgIcon}) => {
 
+    const [logging,setLoging]=useState(false);
+    
     const login=(values)=>{
         const loginRoute = process.env.REACT_APP_BACKEND + '/login/shopkeeper';
-        axios.post(route, {
+        console.log(loginRoute);
+        axios.post(loginRoute, {
             email: values.emailId, 
             password: values.password
         }, {withCredentials: true}).then(res => {
             console.log(res);
-            if(res['data']['status']){
-                // const user=({firstName:res['data']['user']['firstName'],
-                //             lastName:res['data']['user']['lastName'],
-                //             emailId:res['data']['user']['email']});
-                // setUser({
-                //     data:user,
-                //     isFetching:false
-                // });
+            if(res['data']){
+                window.location.reload(false);
             }
         }).catch(error => {
             console.log(error);
         })
     }
     const onFinish = (values) => {
+        setLoging(true);
         console.log('Success:', values);
         login(values);
     };
@@ -55,12 +54,16 @@ const LoginCard = ({imgIcon,title}) => {
                 autoComplete="off"
             >
             <Form.Item
-                label="Username"
-                name="username"
+                name="emailId"
+                label="E-mail"
                 rules={[
                 {
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                },
+                {
                     required: true,
-                    message: 'Please input your username!',
+                    message: 'Please input your E-mail!',
                 },
                 ]}
             >
@@ -81,19 +84,6 @@ const LoginCard = ({imgIcon,title}) => {
             </Form.Item>
 
             <Form.Item
-                name="isShopkeeper"
-                label="ShopOwner"
-                rules={[
-                {
-                    required: true,
-                },
-                ]}
-                valuePropName='checked'
-                >
-                <Switch checkedChildren="Yes" unCheckedChildren="No" defaultChecked />
-            </Form.Item>
-
-            <Form.Item
                 name="remember"
                 valuePropName="checked"
                 wrapperCol={{
@@ -106,12 +96,12 @@ const LoginCard = ({imgIcon,title}) => {
 
             <Form.Item
                 wrapperCol={{
-                offset: 8,
-                span: 16,
+                offset:8,
+                span: 8,
                 }}
             >
-                <Button type="primary" htmlType="submit">
-                Submit
+                <Button type="primary" htmlType="submit" loading={logging}>
+                    Submit
                 </Button>
             </Form.Item>
             </Form>

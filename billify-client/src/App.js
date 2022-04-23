@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import NavBar from './components/NavBar/NavBar';
 import { BrowserRouter as Router,Routes,Route,Navigate } from 'react-router-dom';
 import HomePage from './components/Pages/HomePage';
@@ -7,21 +7,63 @@ import BillPage from './components/Pages/BillPage';
 import ProductPage from './components/Pages/ProductPage';
 import CustomerPage from './components/Pages/CustomerPage';
 import AuthPage from './components/AuthPage/AuthPage';
+import axios from 'axios';
 
 function App() {
+  const [user,setUser]=useState({data:null,isFetching:true});
   // const user={name:"aayush"};
-  const user=null;
+  const getUser=()=>{
+    const loginRoute = process.env.REACT_APP_BACKEND + '/login/shopkeeper';
+    console.log(loginRoute);
+    axios.get(loginRoute, {withCredentials: true}).then(res => {
+      console.log(res);
+      if(res['data']['user']){
+        setUser({
+          data:res['data']['user'],
+          isFetching:false,
+        });
+      }else{
+        setUser({
+          data:undefined,
+          isFetching:false
+        });
+      }
+      }).catch(error => {
+          console.log(error);
+          setUser({
+              data:undefined,
+              isFetching:false
+          });
+      })
+  }
+  useEffect(()=>{
+    let isComponentMounted = true;
+    if(isComponentMounted){
+      getUser();
+    }
+    return () => {
+        isComponentMounted = false;
+    }
+  },[]);
+
   return (
     <div className="App">
       <Router>
-        <NavBar user={user}/>
-        <Routes>
-          <Route path='/' element={<HomePage/>}/>          
-          <Route path='/billings' element={<BillPage/>}/>          
-          <Route path='/products' element={<ProductPage/>}/>          
-          <Route path='/customers' element={<CustomerPage/>}/>          
-          <Route path='/authentication' element={(user==null)?(<AuthPage/>):(<Navigate to='/'/>)}/>          
-        </Routes>
+        {(user.isFetching)?(
+          <>
+            Loading...
+          </>):(
+          <>
+            <NavBar user={user.data}/>
+            <Routes>
+              <Route path='/' element={<HomePage/>}/>          
+              <Route path='/billings' element={<BillPage/>}/>          
+              <Route path='/products' element={<ProductPage/>}/>          
+              <Route path='/customers' element={<CustomerPage/>}/>          
+              <Route path='/authentication' element={(user.data==null)?(<AuthPage />):(<Navigate to='/'/>)}/>        
+            </Routes>
+          </>
+        )}
       </Router>
     </div>
   );

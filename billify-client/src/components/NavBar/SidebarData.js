@@ -5,6 +5,7 @@ import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
 import * as TiIcons from 'react-icons/ti';
 
+
 export const SidebarData_logged_in = [
   {
     title: 'Dashboard',
@@ -35,7 +36,7 @@ export const SidebarData_logged_in = [
     path: '/support',
     icon: <IoIcons.IoMdHelpCircle />,
     cName: 'nav-text'
-  }
+  },
 ];
 
 export const SidebarData_logged_out=[

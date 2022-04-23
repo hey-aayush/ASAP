@@ -1,5 +1,5 @@
 import React from 'react'
-import {Row,Col,Card,Tabs} from 'antd';
+import {Card,Tabs} from 'antd';
 import LoginCard from './LoginCard';
 import SignUpCard from './SignCard';
 import shopkeeperIcon from '../../assets/shopkeeper.png'
