@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const storeSchema = mongoose.Schema({
-    storeid: {
+    storeId: {
         type: String,
         trim: true,
         required: true,
     }, 
-    productid: {
+    productId: {
         type: String,
         trim: true,
         required: true,
