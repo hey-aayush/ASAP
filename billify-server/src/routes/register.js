@@ -90,8 +90,16 @@ router.post("/register/customer",  (req, res) => {
         	const newCustomer = new Customer({
           		email: req.body.email,
           		password: hashedPassword,
+				name: req.body.name
         	});
         	await newCustomer.save();
+			const newUser = new User({
+                email: req.body.email,
+                password: hashedPassword,
+                name: req.body.name,
+				userTypeId: newCustomer._id
+			})
+			await newUser.save();
         	var redir = { redirect: "/login/customer", message:"Customer Created", user: newCustomer};
         	return res.json(redir);
     	}
