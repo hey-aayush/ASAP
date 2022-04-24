@@ -1,10 +1,15 @@
 import { Row,Col } from 'antd'
-import React from 'react'
+import React,{useState} from 'react'
 import ConsumerItem from '../CustomerPage/ConsumerItem'
 import BillCard from './BillCard'
 import Invoice from './Invoice'
 
 function BillingPage() {
+
+  const [productList,setProductList]=useState({list:undefined,isFetching:true});
+  const [customerDetails,setCustomerDetails]=useState({data:undefined,isFetching:true});
+  const [cartProductList,setCartProductList]=useState([]);
+
   return (
     <div>
         <Row>

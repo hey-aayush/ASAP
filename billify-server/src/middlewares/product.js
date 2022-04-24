@@ -98,6 +98,7 @@ module.exports.EditProduct = async (req, res) => {
 module.exports.GetProducts = async (req, res) => {
     try{
         const user = req.user;
+        console.log(user);
         const shopkeeper = await ShopKeeper.findById(user.userTypeId);
         if(!shopkeeper){
             throw new ClientError('No shopkeeper available');
@@ -115,6 +116,8 @@ module.exports.GetProducts = async (req, res) => {
                 quantity: products[i].quantity
             });
         }
+
+        console.log(productsObj);
 
         return res.json({
             status: true,

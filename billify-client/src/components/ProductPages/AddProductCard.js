@@ -1,5 +1,6 @@
 import React from 'react'
 import { Form, Input, InputNumber, Button,Card } from 'antd';
+import { createProduct } from '../../apiCalls/product';
 
 const layout = {
   labelCol: {
@@ -23,13 +24,16 @@ const validateMessages = {
 
 function AddProductCard() {
 
-    const addProduct=()=>{}
+    const addProduct = ({ productName , tag , price }) => {
+      createProduct(productName, price, tag);
+    }
 
     const onFinish = (values) => {
         console.log(values);
-      };
-    
-      return (
+        addProduct(values);
+    }
+
+        return (
         <Card
           title={'Add New Products'} 
           style={{width:'fit-content',margin:'.5rem auto'}}
@@ -50,16 +54,15 @@ function AddProductCard() {
           </Form.Item>
         
           <Form.Item
-            name='quantity'
-            label="Quantity"
+            name='tag'
+            label="Tag"
             rules={[
               {
-                type: 'number',
-                min: 0
+                required: true,
               },
             ]}
           >
-            <InputNumber controls={false} style={{width:'fit-content'}}/>
+            <Input style={{width:'fit-content'}}/>
           </Form.Item>
           
           <Form.Item
@@ -68,7 +71,8 @@ function AddProductCard() {
             rules={[
               {
                 type: 'number',
-                min: 0
+                min: 0,
+                required: true
               },
             ]}
           >

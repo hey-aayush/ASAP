@@ -3,6 +3,7 @@ import {Card,Row,Col,Statistic } from 'antd'
 import millify from 'millify';
 
 function RevenueCard() {
+
   return (
     <Card style={{width:'fit-content',margin:'.5rem auto',textAlign:'center'}}
       title={'Sale Summary'}

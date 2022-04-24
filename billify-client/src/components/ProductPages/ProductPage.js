@@ -7,6 +7,7 @@ import EditProductCard from './EditProductCard';
 import SearchProductCard from './SearchProductCard';
 
 function ProductPage() {
+
   const [productList,setProductList]=useState({list:undefined,isFetching:true});
 
   const getProducts=()=>{
@@ -16,19 +17,23 @@ function ProductPage() {
       console.log(res);
       if(res['data']['products']){
         setProductList({
-          data:res['data']['products'],
+          list:res['data']['products'].map((product)=>({
+            name:product.product.name,
+            price:product.product.price,
+            quantity:product.quantity,
+          })),
           isFetching:false,
         });
       }else{
         setProductList({
-          data:undefined,
+          list:undefined,
           isFetching:false,
-        });        
+        });
       }
       }).catch(error => {
         console.log(error);
         setProductList({
-          data:undefined,
+          list:undefined,
           isFetching:false,
         }); 
       })
@@ -42,7 +47,7 @@ function ProductPage() {
       <Row>
         <Col xs={24} sm={24} md={12} lg={12}>
           <Row><AddProductCard/></Row>
-          <Row><EditProductCard/></Row>
+          <Row><EditProductCard productList={productList.list}/></Row>
         </Col>
         <Col xs={24} sm={24} md={12} lg={8}>
           <Card
@@ -50,9 +55,11 @@ function ProductPage() {
             style={{width:'fit-content',margin:'2rem auto'}}
             hoverable>
             <Row span={24}>
-              <Product/>
-              <Product/>
-              <Product/>
+              {
+                productList && productList.list && productList.list.map((product,index) => {
+                    return <Product key={index} title={product.name} price={product.price} quantity={product.quantity} />
+                })
+              }
             </Row>
           </Card>
 
