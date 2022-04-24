@@ -2,44 +2,38 @@ import ConsumerItem from './ConsumerItem'
 import RevenueCard from './RevenueCard'
 import SearchCustomerCard from './SearchCustomerCard'
 import {Card,Row,Col } from 'antd'
-import React,{useState,useEffect} from 'react'
-import axios from 'axios'
+import axios from 'axios';
+import { useState, useEffect } from 'react'
 
 export default function CustomerPage() {
+  const [customerList,setCustomerList]=useState({list:undefined,isFetching:true});
 
-  const [customers,setCustomerList]=useState({list:undefined,isFetching:false});
-
-  const getCustomerLists=()=>{
-    const CustomerRoute = process.env.REACT_APP_BACKEND + '/shopkeeper/getCustomers';
-    console.log(CustomerRoute);
-    axios.get(CustomerRoute, {withCredentials: true}).then(res => {
+  const getCustomers=()=>{
+    const customerRoute = process.env.REACT_APP_BACKEND + '/billing/topcustomers';
+    console.log(customerRoute);
+    axios.get(customerRoute, {withCredentials: true}).then(res => {
       console.log(res);
-      if(res['data']['Customers']){
-        // setCustomerList({
-        //   list:res['data']['Customers'].map((product)=>({
-        //     name:product.product.name,
-        //     price:product.product.price,
-        //     quantity:product.quantity,
-        //   })),
-        //   isFetching:false,
-        // });
-      }else{
-        // setProductList({
-        //   list:undefined,
-        //   isFetching:false,
-        // });
-      }
-      }).catch(error => {
-        console.log(error);
-        // setProductList({
-        //   list:undefined,
-        //   isFetching:false,
-        // }); 
+      // if(res['data']['products']){
+      //   setCustomerList({
+      //     list:res['data']['products'],
+      //     isFetching:false,
+      //   });
+      // }else{
+      //   setCustomerList({
+      //     list:undefined,
+      //     isFetching:false,
+      //   });
+      // }
+      // }).catch(error => {
+      //   console.log(error);
+      //   setCustomerList({
+      //     list:undefined,
+      //     isFetching:false,
+      //   }); 
       })
     }
-
     useEffect(()=>{
-      getCustomerLists();
+      getCustomers();
     },[])
 
   return (
