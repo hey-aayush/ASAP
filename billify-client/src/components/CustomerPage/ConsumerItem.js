@@ -2,7 +2,7 @@ import React from 'react'
 import {Card,Row,Col,Statistic,Typography } from 'antd'
 import consumerImg from '../../assets/customer.png'
 
-function ConsumerItem() {
+function ConsumerItem({name , netOrder , avgOrder}) {
   return (
     <Col span={24}>
         <Card style={{margin:'.5rem'}}
@@ -13,13 +13,13 @@ function ConsumerItem() {
                     <img src={consumerImg} alt='product-img' height={'45px'} width={'45px'}/>
                 </Col>
                 <Col span={8}>
-                    <Statistic title="Name" value={'Aayush'} />
+                    <Statistic title="Name" value={name} />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Net Order" value={120} />
+                    <Statistic title="Net Order" value={netOrder} />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Avg Order" value={'$12'} />
+                    <Statistic title="Avg Order" value={avgOrder} />
                 </Col>
             </Row>
         </Card>

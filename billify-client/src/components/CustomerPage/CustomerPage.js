@@ -9,7 +9,11 @@ export default function CustomerPage() {
   const [customerList,setCustomerList]=useState({list:undefined,isFetching:true});
 
   const getCustomers=()=>{
-    const customerRoute = process.env.REACT_APP_BACKEND + '/billing/topcustomers';
+    const currTime = new Date().getTime();
+    const startTime = currTime - (1000*24*60*60*30);
+    const customerRoute = process.env.REACT_APP_BACKEND + '/billing/topcustomers'+ '?' + 'startTimestamp' + startTime
+    + '&' + 'endTimeStamp' + currTime;
+    
     console.log(customerRoute);
     axios.get(customerRoute, {withCredentials: true}).then(res => {
       console.log(res);
