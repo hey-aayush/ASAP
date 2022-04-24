@@ -17,19 +17,19 @@ function ProductPage() {
       console.log(res);
       if(res['data']['products']){
         setProductList({
-          data:res['data']['products'],
+          list:res['data']['products'],
           isFetching:false,
         });
       }else{
         setProductList({
-          data:undefined,
+          list:undefined,
           isFetching:false,
-        });        
+        });
       }
       }).catch(error => {
         console.log(error);
         setProductList({
-          data:undefined,
+          list:undefined,
           isFetching:false,
         }); 
       })
@@ -51,9 +51,11 @@ function ProductPage() {
             style={{width:'fit-content',margin:'2rem auto'}}
             hoverable>
             <Row span={24}>
-              <Product/>
-              <Product/>
-              <Product/>
+              {
+                productList && productList.list && productList.list.map((product,index) => {
+                    return <Product key={index} title={product.product.name} price={product.price} quantity={product.quantity} />
+                })
+              }
             </Row>
           </Card>
 
