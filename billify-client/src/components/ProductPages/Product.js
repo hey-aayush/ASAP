@@ -10,10 +10,12 @@ function Product({title,desc,tags,price,quantity}) {
         hoverable
         >
         <Row>
-            <Col span={4}>
-                <img src={productImg} alt='product-img' height={'45px'} width={'45px'}/>
+            <Col span={3}>
+                <img src={productImg} alt='product-img' height={'35px'} width={'35px'}/>
             </Col>
-            <Col span={8}>
+            <Col span={9}>
+              {/* <Statistic title="Name" value={title} /> */}
+
                 <Title level={5}>{title}</Title>
             </Col>
             <Col span={6}>
