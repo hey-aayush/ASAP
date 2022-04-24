@@ -3,6 +3,9 @@ import {Card,Row,Col,Statistic,Typography } from 'antd'
 import consumerImg from '../../assets/customer.png'
 
 function ConsumerItem({name , netOrder , avgOrder}) {
+    if(!avgOrder){
+        avgOrder=netOrder;
+    }
   return (
     <Col span={24}>
         <Card style={{margin:'.5rem'}}

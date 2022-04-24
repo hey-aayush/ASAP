@@ -13,27 +13,27 @@ export default function CustomerPage() {
     const startTime = currTime - (1000*24*60*60*30);
     const customerRoute = process.env.REACT_APP_BACKEND + '/billing/topcustomers'+ '?' + 'startTimestamp' + startTime
     + '&' + 'endTimeStamp' + currTime;
-    
+
     console.log(customerRoute);
     axios.get(customerRoute, {withCredentials: true}).then(res => {
       console.log(res);
-      // if(res['data']['products']){
-      //   setCustomerList({
-      //     list:res['data']['products'],
-      //     isFetching:false,
-      //   });
-      // }else{
-      //   setCustomerList({
-      //     list:undefined,
-      //     isFetching:false,
-      //   });
-      // }
-      // }).catch(error => {
-      //   console.log(error);
-      //   setCustomerList({
-      //     list:undefined,
-      //     isFetching:false,
-      //   }); 
+      if(res['data']){
+        setCustomerList({
+          list:res['data'],
+          isFetching:false,
+        });
+      }else{
+        setCustomerList({
+          list:undefined,
+          isFetching:false,
+        });
+      }
+      }).catch(error => {
+        console.log(error);
+        setCustomerList({
+          list:undefined,
+          isFetching:false,
+        }); 
       })
     }
     useEffect(()=>{
@@ -54,9 +54,11 @@ export default function CustomerPage() {
               style={{width:'fit-content',margin:'.5rem auto'}}
               hoverable>
               <Row span={24}>
-                <ConsumerItem/>
-                <ConsumerItem/>
-                <ConsumerItem/>
+                {
+                  customerList && customerList.list && customerList.list.map((customer, index) => {
+                    return <ConsumerItem key={index} name={customer.name} netOrder={customer.netOrder} avgOrder={customer.avgOrder} />
+                  })
+                }
               </Row>
           </Card>
         </Col>      
