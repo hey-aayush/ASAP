@@ -32,6 +32,12 @@ export const SidebarData_logged_in = [
     cName: 'nav-text'
   },
   {
+    title: 'Portfolio',
+    path: '/portfolio',
+    icon: <FaIcons.FaUser />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Support',
     path: '/support',
     icon: <IoIcons.IoMdHelpCircle />,

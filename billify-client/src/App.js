@@ -8,6 +8,7 @@ import CustomerPage from './components/CustomerPage/CustomerPage';
 import AuthPage from './components/AuthPage/AuthPage';
 import axios from 'axios';
 import BillingPage from './components/BillPage/BillingPage';
+import Portfolio from './components/Portfolio/Portfolio';
 
 function App() {
   const [user,setUser]=useState({data:null,isFetching:true});
@@ -60,6 +61,7 @@ function App() {
               <Route path='/billings' element={<BillingPage/>}/>          
               <Route path='/products' element={<ProductPage/>}/>          
               <Route path='/customers' element={<CustomerPage/>}/>          
+              <Route path='/portfolio' element={<Portfolio/>}/>          
               <Route path='/authentication' element={(user.data==null)?(<AuthPage />):(<Navigate to='/'/>)}/>        
             </Routes>
           </>
