@@ -1,4 +1,3 @@
-import React from 'react'
 import ConsumerItem from './ConsumerItem'
 import RevenueCard from './RevenueCard'
 import SearchCustomerCard from './SearchCustomerCard'

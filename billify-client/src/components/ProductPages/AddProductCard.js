@@ -31,9 +31,9 @@ function AddProductCard() {
     const onFinish = (values) => {
         console.log(values);
         addProduct(values);
-      };
-    
-      return (
+    }
+
+        return (
         <Card
           title={'Add New Products'} 
           style={{width:'fit-content',margin:'.5rem auto'}}

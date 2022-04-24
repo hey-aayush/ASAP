@@ -1,5 +1,7 @@
-import React from 'react'
-import { Form, Input, InputNumber, Button,Card } from 'antd';
+import React,{useState} from 'react'
+import { Form, Select, InputNumber, Button,Card } from 'antd';
+
+const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -22,12 +24,20 @@ const validateMessages = {
   };
   
 
-function EditProductCard() {
+function EditProductCard({productList}) {
+
+    // const [searchTerm,setSearchTerm]=useState('');
+
     const editProduct=()=>{}
 
     const onFinish = (values) => {
-        console.log(values);
-      };
+      console.log(values);
+      editProduct();
+    };
+
+    // const options=productList.filter((product) => (product.name.includes(searchTerm)));
+
+    // const handleSearch=(event)=>{setSearchTerm(event.target.value)};
     
       return (
         <Card
@@ -35,6 +45,7 @@ function EditProductCard() {
           style={{width:'fit-content',margin:'.5rem auto'}}
           hoverable
         >
+        {console.log(productList)}
 
         <Form {...layout} name="nest-messages" onFinish={onFinish}  validateMessages={validateMessages} >
           <Form.Item
@@ -46,7 +57,20 @@ function EditProductCard() {
               },
             ]}
           >
-            <Input style={{width:'fit-content'}}/>
+            {/* <Input style={{width:'fit-content'}}/> */}
+            {(productList)?(
+              <Select
+                defaultValue={productList[0].name}
+                style={{ width: '100%' }}
+              >
+                {productList.map((product,index)=>{
+                  return (
+                    <Option key={product}>{product.name}</Option>
+                  )
+                })}
+              </Select>
+            ):(<></>)}
+
           </Form.Item>
         
           <Form.Item
