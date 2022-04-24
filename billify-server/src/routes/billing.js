@@ -33,7 +33,7 @@ router.get('/billing/topcustomers', IsAuthenticated, async(req, res) =>{
             return res.status(404).send()
         }
     
-        const arr = sortByFrequency(bills);
+        const arr = await sortByFrequency(bills);
         
         res.send(arr);
     }catch(e) {
@@ -44,7 +44,7 @@ router.get('/billing/topcustomers', IsAuthenticated, async(req, res) =>{
     }
 })
 
-function sortByFrequency(arr) {
+const sortByFrequency = async (arr) => {
     var map = new Map();
 
     for(var i=0; i<arr.length; i++){
@@ -68,21 +68,27 @@ function sortByFrequency(arr) {
         var mongoose = require('mongoose');
         //console.log(ele)
         var id = mongoose.Types.ObjectId(ele[0]);
+        console.log(id)
         //console.log('ele.. ', ele[1])
+        const cust = await Customer.findById(id);
+        //console.log('cust... ', cust);
+        console.log(cust)
         const obj = {
-            customerId : id,
-            amount : ele[1]
+            name : cust.name,
+            netOrder : ele[1],
+            avgOrder: ele[1]/cust.bills.length,
         }
+        //console.log(obj);
         temp.push(obj);
     }
-    //console.log(temp.length);
+    console.log(temp.length);
     
 
     function compare( a, b ) {
-        if ( a.amount < b.amount ){
-          return -1;
+        if ( a.netOrder < b.netOrder ){
+          return 1;
         }
-        if ( a.amount > b.amount ){
+        if ( a.netOrder > b.netOrder ){
           return -1;
         }
         return 0;
@@ -189,7 +195,7 @@ router.post('/billing/generatebill',IsAuthenticated,  async (req, res) => {
         //     throw new ClientError('Purchase not possible due to unavailability of items');
         // }
 
-        await performPurchase(shopId, items);
+        //await performPurchase(shopId, items);
 
         const bill = new Bill({
             items,
@@ -202,6 +208,8 @@ router.post('/billing/generatebill',IsAuthenticated,  async (req, res) => {
 
         // for notifications
         const customer = await Customer.findById(customerId);
+
+        
         //console.log('customer: ', customer);
         const notification = new Notification({
             data: bill,
@@ -219,8 +227,9 @@ router.post('/billing/generatebill',IsAuthenticated,  async (req, res) => {
         customer.markModified('notifications')
 
         console.log(customer.notifications.length)
-
+        customer.bills.push(bill)
         await customer.save();
+
 
         const cust = await Customer.findById(customerId);
         console.log(cust);

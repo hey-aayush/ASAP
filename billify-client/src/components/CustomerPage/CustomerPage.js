@@ -2,44 +2,42 @@ import ConsumerItem from './ConsumerItem'
 import RevenueCard from './RevenueCard'
 import SearchCustomerCard from './SearchCustomerCard'
 import {Card,Row,Col } from 'antd'
-import React,{useState,useEffect} from 'react'
-import axios from 'axios'
+import axios from 'axios';
+import { useState, useEffect } from 'react'
 
 export default function CustomerPage() {
+  const [customerList,setCustomerList]=useState({list:undefined,isFetching:true});
 
-  const [customers,setCustomerList]=useState({list:undefined,isFetching:false});
+  const getCustomers=()=>{
+    const currTime = new Date().getTime();
+    const startTime = currTime - (1000*24*60*60*30);
+    const customerRoute = process.env.REACT_APP_BACKEND + '/billing/topcustomers'+ '?' + 'startTimestamp' + startTime
+    + '&' + 'endTimeStamp' + currTime;
 
-  const getCustomerLists=()=>{
-    const CustomerRoute = process.env.REACT_APP_BACKEND + '/shopkeeper/getCustomers';
-    console.log(CustomerRoute);
-    axios.get(CustomerRoute, {withCredentials: true}).then(res => {
+    console.log(customerRoute);
+    axios.get(customerRoute, {withCredentials: true}).then(res => {
       console.log(res);
-      if(res['data']['Customers']){
-        // setCustomerList({
-        //   list:res['data']['Customers'].map((product)=>({
-        //     name:product.product.name,
-        //     price:product.product.price,
-        //     quantity:product.quantity,
-        //   })),
-        //   isFetching:false,
-        // });
+      if(res['data']){
+        setCustomerList({
+          list:res['data'],
+          isFetching:false,
+        });
       }else{
-        // setProductList({
-        //   list:undefined,
-        //   isFetching:false,
-        // });
+        setCustomerList({
+          list:undefined,
+          isFetching:false,
+        });
       }
       }).catch(error => {
         console.log(error);
-        // setProductList({
-        //   list:undefined,
-        //   isFetching:false,
-        // }); 
+        setCustomerList({
+          list:undefined,
+          isFetching:false,
+        }); 
       })
     }
-
     useEffect(()=>{
-      getCustomerLists();
+      getCustomers();
     },[])
 
   return (
@@ -56,9 +54,11 @@ export default function CustomerPage() {
               style={{width:'fit-content',margin:'.5rem auto'}}
               hoverable>
               <Row span={24}>
-                <ConsumerItem/>
-                <ConsumerItem/>
-                <ConsumerItem/>
+                {
+                  customerList && customerList.list && customerList.list.map((customer, index) => {
+                    return <ConsumerItem key={index} name={customer.name} netOrder={customer.netOrder} avgOrder={customer.avgOrder} />
+                  })
+                }
               </Row>
           </Card>
         </Col>      
