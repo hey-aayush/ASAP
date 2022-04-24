@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import RevenueCard from '../CustomerPage/RevenueCard'
 import RecentSales from './RecentSales'
 import {Row,Col } from 'antd'
 import axios from 'axios'
 
 function HomePage() {
+
+  const [ todayStats, setTodayStats ] = useState();
+  const [ totalStats, setTotalStats ] = useState();
+
   const getStatsForToday=()=>{
     const currTime = new Date().getTime();
     const startTime = currTime - (1000*24*60*60);
@@ -12,10 +16,12 @@ function HomePage() {
     + '&' + 'endTimeStamp' + currTime;
     console.log(dashboardRoute);
     axios.get(dashboardRoute, {withCredentials: true}).then(res => {
-      console.log(res);
+      console.log('Today', res);
+      setTodayStats(res['data']);
     })
    
   }
+
   const getTotalStats=()=>{
     const currTime = new Date().getTime();
     const startTime = 0;
@@ -23,15 +29,26 @@ function HomePage() {
     + '&' + 'endTimeStamp' + currTime;
     console.log(dashboardRoute);
     axios.get(dashboardRoute, {withCredentials: true}).then(res => {
-      console.log(res);
+      console.log('Total', res);
+      setTotalStats(res['data']);
     })
    
   }
+  
+  useEffect(()=>{
+    getStatsForToday();
+    getTotalStats();
+  },[])
+
   return (
     <div>
         <Row>
-            <Col md={24} lg={12}><RevenueCard/></Col>
-            <Col md={24} lg={12}><RecentSales/></Col>
+          {
+            totalStats && <Col md={24} lg={12}><RevenueCard data={totalStats} /></Col>
+          }
+          {
+            todayStats && <Col md={24} lg={12}><RecentSales data={todayStats} /></Col>
+          }
         </Row>
     </div>
   )
