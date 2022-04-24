@@ -7,6 +7,7 @@ import EditProductCard from './EditProductCard';
 import SearchProductCard from './SearchProductCard';
 
 function ProductPage() {
+
   const [productList,setProductList]=useState({list:undefined,isFetching:true});
 
   const getProducts=()=>{

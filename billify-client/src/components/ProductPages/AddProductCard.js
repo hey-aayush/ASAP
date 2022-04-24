@@ -27,6 +27,7 @@ function AddProductCard() {
 
     const onFinish = (values) => {
         console.log(values);
+        
       };
     
       return (
