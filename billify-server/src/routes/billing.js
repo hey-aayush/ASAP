@@ -184,10 +184,10 @@ router.post('/billing/generatebill',IsAuthenticated,  async (req, res) => {
     const {items, shopId, customerId, amount} = body;
     
     try{
-        const isPurchasePossible = await isSufficientProductsAvailable(shopId, items);
-        if(!isPurchasePossible){
-            throw new ClientError('Purchase not possible due to unavailability of items');
-        }
+        // const isPurchasePossible = await isSufficientProductsAvailable(shopId, items);
+        // if(!isPurchasePossible){
+        //     throw new ClientError('Purchase not possible due to unavailability of items');
+        // }
 
         await performPurchase(shopId, items);
 
