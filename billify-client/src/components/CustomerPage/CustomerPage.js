@@ -3,8 +3,40 @@ import ConsumerItem from './ConsumerItem'
 import RevenueCard from './RevenueCard'
 import SearchCustomerCard from './SearchCustomerCard'
 import {Card,Row,Col } from 'antd'
+import axios from 'axios';
+import { useState, useEffect } from 'react'
 
 export default function CustomerPage() {
+  const [customerList,setCustomerList]=useState({list:undefined,isFetching:true});
+
+  const getCustomers=()=>{
+    const customerRoute = process.env.REACT_APP_BACKEND + '/billing/topcustomers';
+    console.log(customerRoute);
+    axios.get(customerRoute, {withCredentials: true}).then(res => {
+      console.log(res);
+      // if(res['data']['products']){
+      //   setCustomerList({
+      //     list:res['data']['products'],
+      //     isFetching:false,
+      //   });
+      // }else{
+      //   setCustomerList({
+      //     list:undefined,
+      //     isFetching:false,
+      //   });
+      // }
+      // }).catch(error => {
+      //   console.log(error);
+      //   setCustomerList({
+      //     list:undefined,
+      //     isFetching:false,
+      //   }); 
+      })
+    }
+    useEffect(()=>{
+      getCustomers();
+    },[])
+
   return (
     <div>
       <Row>
