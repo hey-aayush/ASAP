@@ -2,6 +2,7 @@ import React from 'react'
 import RevenueCard from '../CustomerPage/RevenueCard'
 import RecentSales from './RecentSales'
 import {Row,Col } from 'antd'
+import axios from 'axios'
 
 function HomePage() {
   const getStatsForToday=()=>{
