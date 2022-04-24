@@ -17,7 +17,11 @@ function ProductPage() {
       console.log(res);
       if(res['data']['products']){
         setProductList({
-          list:res['data']['products'],
+          list:res['data']['products'].map((product)=>({
+            name:product.product.name,
+            price:product.product.price,
+            quantity:product.quantity,
+          })),
           isFetching:false,
         });
       }else{
@@ -43,7 +47,7 @@ function ProductPage() {
       <Row>
         <Col xs={24} sm={24} md={12} lg={12}>
           <Row><AddProductCard/></Row>
-          <Row><EditProductCard/></Row>
+          <Row><EditProductCard productList={productList.list}/></Row>
         </Col>
         <Col xs={24} sm={24} md={12} lg={8}>
           <Card
@@ -53,7 +57,7 @@ function ProductPage() {
             <Row span={24}>
               {
                 productList && productList.list && productList.list.map((product,index) => {
-                    return <Product key={index} title={product.product.name} price={product.price} quantity={product.quantity} />
+                    return <Product key={index} title={product.name} price={product.price} quantity={product.quantity} />
                 })
               }
             </Row>
