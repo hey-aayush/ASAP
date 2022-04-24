@@ -1,7 +1,9 @@
 # ASAP
 Hack-36
 
-## Projecct Name
+<a href="https://hack36.com"> <img src="http://bit.ly/BuiltAtHack36" height=20px> </a>
+
+## Project Name
 Billify
 
 ## Idea
@@ -14,9 +16,9 @@ Website which is used to track inventory and customers by shopkeeper and also se
 - React
 
 ## Team Members:
-1. Aayush Kumar Shandilya
-2. Saurabh Kumar Kaushal
-3. Alok Kumar Singh
-4. Pradyumn Bhatter
+1. [Aayush Kumar Shandilya](https://github.com/hey-aayush)
+2. [Saurabh Kumar Kaushal](https://github.com/saurabh-bot)
+3. [Alok Kumar Singh](https://github.com/akstron)
+4. [Pradyumn Bhatter](https://github.com/prbhatter)
 
 
