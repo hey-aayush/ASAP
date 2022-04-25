@@ -1,5 +1,6 @@
 import React from 'react'
-import { Form, Input, InputNumber, Button,Card} from 'antd';
+import { Form, Input, InputNumber, Button,Card, Select} from 'antd';
+const { Option } = Select;
 
 const layout = {
     labelCol: {
@@ -21,11 +22,15 @@ const layout = {
     },
   };
 
-function BillCard() {
+function BillCard({productList,setCustomerDetails,setCartProductList}) {
 
     const onFinish = (values) => {
-        console.log(values);
-      };
+      console.log(values);
+      setCartProductList({
+
+      })
+    };
+
   return (
     <div>
         <Card
@@ -75,8 +80,21 @@ function BillCard() {
                 required: true,
               },
             ]}
+            style={{width:'max-content'}}
           >
-            <Input style={{width:'fit-content'}}/>
+              {(productList)?(
+                <Select
+                  defaultValue={productList[0].id}
+                >
+                  {productList.map((product,index)=>{
+                    return (
+                      <Option key={product}>{product.name}</Option>
+                    )
+                  })}
+                </Select>
+              ):(<>
+                <Select disabled={true}/>
+              </>)}
           </Form.Item>
         
           <Form.Item

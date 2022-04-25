@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import { Typography, Divider, Row, Col, Statistic } from 'antd';
-// import PieDonut from '../../utils/PieDonut'
 import axios from 'axios'
+import PortfolioCard from './PortfolioCard';
 
 const { Title } = Typography;
 
@@ -38,10 +38,7 @@ function Portfolio() {
 
   return (
     <div>
-        {/* <Divider orientation="right" > */}
-            Portfolio
-            {/* <PieDonut Heading={'Ependiture'} products={product} quantity={quantity}/> */}
-        {/* </Divider> */}
+        <PortfolioCard/>
     </div>
   )
 }

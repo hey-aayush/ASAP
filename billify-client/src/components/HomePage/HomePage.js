@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import RevenueCard from '../CustomerPage/RevenueCard'
+import RevenueCard from './RevenueCard'
 import RecentSales from './RecentSales'
 import {Row,Col } from 'antd'
 import axios from 'axios'
